@@ -3,10 +3,10 @@ micronaut:
     name: awsTraining
 datasources:
   default:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: ${DB_URI:`jdbc:postgresql://localhost:5432/postgres`}
     driverClassName: org.postgresql.Driver
-    username: postgres
-    password: ''
-    schema-generate: CREATE_DROP
-    dialect: POSTGRES
-jpa.default.properties.hibernate.hbm2ddl.auto: update
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:12345}
+    dialect: ${DB_DIALECT:POSTGRES}
+
+jpa.default.properties.hibernate.hbm2ddl.auto: ${JPA_DLL_AUTO:update}
