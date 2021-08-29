@@ -1,5 +1,6 @@
 package com.rayllanderson.aws.anime
 
+import com.rayllanderson.aws.anime.save.SaveAnimeRequest
 import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpStatus
@@ -39,7 +40,6 @@ internal class SaveAnimeControllerTest {
 
         val request = HttpRequest.POST(baseUrl, requestBody)
         val response = restClient.toBlocking().exchange(request, SaveAnimeRequest::class.java)
-
 
         assertEquals(HttpStatus.CREATED, response.status)
         assertTrue(response.headers.contains(HttpHeaders.LOCATION))

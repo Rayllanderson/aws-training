@@ -7,7 +7,7 @@ import javax.persistence.Id
 import javax.validation.constraints.NotBlank
 
 @Entity
-class Anime(
+data class Anime(
     @Column(nullable = false) @field:NotBlank val name: String
 ) {
     @Id

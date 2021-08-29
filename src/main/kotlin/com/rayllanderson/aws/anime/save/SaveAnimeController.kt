@@ -1,5 +1,6 @@
-package com.rayllanderson.aws.anime
+package com.rayllanderson.aws.anime.save
 
+import com.rayllanderson.aws.anime.AnimeRepository
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Post
@@ -14,10 +15,10 @@ import javax.validation.Valid
 @Validated
 @Controller("/api/v1/animes")
 class SaveAnimeController(
-    val repository: AnimeRepository
+    private val repository: AnimeRepository
 ) {
 
-    val logger: Logger = LoggerFactory.getLogger(javaClass)
+    private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     @Post
     @Transactional
