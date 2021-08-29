@@ -1,4 +1,7 @@
 micronaut:
+  server:
+    port: ${HTTP_PORT:8080}
+
   application:
     name: awsTraining
 datasources:
@@ -10,3 +13,11 @@ datasources:
     dialect: ${DB_DIALECT:POSTGRES}
 
 jpa.default.properties.hibernate.hbm2ddl.auto: ${JPA_DLL_AUTO:update}
+
+endpoints:
+  all:
+    sensitive: ${HTTP_SENSITIVE:true}
+  health:
+    enabled: ${HEALTH_ENABLED:true}
+    sensitive: ${HEALTH_SENSITIVE:false}
+    details-visible: ${HEALTH_DETAILS_VISIBLE:ANONYMOUS}
