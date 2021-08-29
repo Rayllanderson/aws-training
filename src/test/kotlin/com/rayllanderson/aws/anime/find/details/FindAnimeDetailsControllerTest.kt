@@ -3,12 +3,16 @@ package com.rayllanderson.aws.anime.find.details
 import com.rayllanderson.aws.anime.Anime
 import com.rayllanderson.aws.anime.AnimeRepository
 import io.micronaut.http.HttpRequest
+import io.micronaut.http.HttpStatus
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
+import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import jakarta.inject.Inject
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import java.util.*
 
 @MicronautTest(transactional = false)
 internal class FindAnimeDetailsControllerTest{
@@ -32,5 +36,17 @@ internal class FindAnimeDetailsControllerTest{
 
         assertNotNull(response.body())
         assertEquals(expectedId, response.body()!!.id)
+    }
+
+    @Test
+    fun `should return 404 not found when anime not exists` (){
+        val error = assertThrows<HttpClientResponseException> {
+            restClient.toBlocking().exchange(
+                HttpRequest.GET<Any>("${baseUrl}/${UUID.randomUUID()}"),
+                Any::class.java
+            )
+        }
+        assertEquals(HttpStatus.NOT_FOUND, error.status)
+        assertNull(error.response.body())
     }
 }
