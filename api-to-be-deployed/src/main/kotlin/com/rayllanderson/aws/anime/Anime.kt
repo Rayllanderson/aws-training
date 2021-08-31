@@ -2,12 +2,14 @@ package com.rayllanderson.aws.anime
 
 import java.util.*
 import javax.persistence.Column
+import javax.persistence.Entity
 import javax.persistence.Id
 import javax.validation.constraints.NotBlank
 
-class Anime(
+@Entity
+data class Anime(
     @Column(nullable = false) @field:NotBlank val name: String
 ) {
     @Id
-    var id: UUID = UUID.randomUUID()
+    val id: UUID = UUID.randomUUID()
 }
