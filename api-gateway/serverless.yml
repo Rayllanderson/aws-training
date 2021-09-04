@@ -87,6 +87,12 @@ functions:
           path: pacientes/{pacienteId}
           method: get
 
+  cadastraPaciente:
+    handler: handler.cadastraPaciente
+    events:
+      - http:
+          path: pacientes
+          method: post
 
 resources:
   Resources:
