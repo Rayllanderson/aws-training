@@ -38,6 +38,7 @@ provider:
       - dynamodb:PutItem
       - dynamodb:DeleteItem
       - dynamodb:GetItem
+      - dynamodb:UpdateItem
     Resource: arn:aws:dynamodb:us-east-1:AWS_ID_AQUI:table/PACIENTES   
 
 # you can overwrite defaults here
@@ -93,6 +94,13 @@ functions:
       - http:
           path: pacientes
           method: post
+
+  atualizaPaciente:
+    handler: handler.atualizaPaciente
+    events:
+      - http:
+          path: pacientes/{paciente_id}
+          method: put
 
 resources:
   Resources:
