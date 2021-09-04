@@ -28,24 +28,38 @@ module.exports.listarPacientes = async (event) => {
 }
 
 module.exports.buscaPorId = async (event) => {
-  const { pacienteId } = event.pathParameters
+  try {
 
-  const pacienteEncontrado = pacientes.find(paciente => paciente.id == pacienteId)
+    const { pacienteId } = event.pathParameters
 
-  if (pacienteEncontrado) {
+    const data = await dynamoDb.get({
+      ...params,
+      Key: {
+        paciente_id: pacienteId
+      }
+    }).promise()
+
+    const pacienteEncontrado = data.Item
+
+    if (pacienteEncontrado) {
+      return {
+        statusCode: 200,
+        body: JSON.stringify(pacienteEncontrado),
+      };
+    } else {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ error: "Não encontrado" }),
+      };
+    }
+  } catch (err) {
+    console.log("Erro...", err)
     return {
-      statusCode: 200,
-      body: JSON.stringify(pacienteEncontrado),
+      statusCode: err.statusCode ? err.statusCode : 500,
+      body: JSON.stringify({
+        error: err.name ? err.name : "Ocorreu um erro",
+        message: err.message ? err.message : "Erro desconhecido"
+      }),
     };
-  } else {
-    return {
-      statusCode: 404,
-      body: JSON.stringify({ error: "Não encontrado" }),
-    };
-  }
-
-
-
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  // return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
+  };
 };

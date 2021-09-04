@@ -37,6 +37,7 @@ provider:
       - dynamodb:Scan
       - dynamodb:PutItem
       - dynamodb:DeleteItem
+      - dynamodb:GetItem
     Resource: arn:aws:dynamodb:us-east-1:AWS_ID_AQUI:table/PACIENTES   
 
 # you can overwrite defaults here
