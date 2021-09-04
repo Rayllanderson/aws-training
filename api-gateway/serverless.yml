@@ -99,8 +99,15 @@ functions:
     handler: handler.atualizaPaciente
     events:
       - http:
-          path: pacientes/{paciente_id}
+          path: pacientes/{pacienteId}
           method: put
+
+  deletaPaciente:
+      handler: handler.deletaPaciente
+      events:
+        - http:
+            path: pacientes/{pacienteId}
+            method: delete
 
 resources:
   Resources:

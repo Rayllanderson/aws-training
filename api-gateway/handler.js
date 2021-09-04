@@ -104,7 +104,7 @@ module.exports.cadastraPaciente = async (event) => {
 
 module.exports.atualizaPaciente = async (event) => {
   try {
-    const { paciente_id } = event.pathParameters
+    const { pacienteId } = event.pathParameters
 
     const dados = JSON.parse(event.body);
 
@@ -114,7 +114,7 @@ module.exports.atualizaPaciente = async (event) => {
       .update({
         ...params,
         Key: {
-          paciente_id: paciente_id
+          paciente_id: pacienteId
         },
         UpdateExpression:
           'SET nome = :nome, dataNascimento = :dataNascimento, email = :email,'
@@ -153,6 +153,46 @@ module.exports.atualizaPaciente = async (event) => {
     };
   }
 };
+
+module.exports.deletaPaciente = async event => {
+  const { pacienteId } = event.pathParameters
+
+  try {
+    await dynamoDb
+      .delete({
+        ...params,
+        Key: {
+          paciente_id: pacienteId
+        },
+        ConditionExpression: 'attribute_exists(paciente_id)'
+      })
+      .promise()
+
+    return {
+      statusCode: 204
+    }
+  } catch (err) {
+    console.log("Error", err);
+
+    let error = err.name ? err.name : "Exception";
+    let message = err.message ? err.message : "Unknown error";
+    let statusCode = err.statusCode ? err.statusCode : 500;
+
+    if (error == 'ConditionalCheckFailedException') {
+      error = 'Paciente não existe';
+      message = `Recurso com o ID ${pacienteId} não existe e não pode ser excluído`;
+      statusCode = 404;
+    }
+
+    return {
+      statusCode,
+      body: JSON.stringify({
+        error,
+        message
+      }),
+    };
+  }
+}
 
 
 
