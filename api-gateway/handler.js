@@ -1,20 +1,31 @@
 'use strict';
 
-const pacientes = [
-  { id: 1, nome: 'Kaguya Shinomiya', dataNascimento: '2004-01-01' },
-  { id: 2, nome: 'Hayasaka Ai', dataNascimento: '2003-04-02' },
-  { id: 3, nome: 'Chika Fujiwara', dataNascimento: '2003-03-03' }
-]
+const AWS = require('aws-sdk')
+
+const dynamoDb = new AWS.DynamoDB.DocumentClient()
+const params = {
+  TableName: 'PACIENTES'
+}
 
 module.exports.listarPacientes = async (event) => {
-  return {
-    statusCode: 200,
-    body: JSON.stringify(pacientes),
+  try {
+    const data = await dynamoDb.scan(params).promise();
+    const pacientes = data.Items
+    return {
+      statusCode: 200,
+      body: JSON.stringify(pacientes),
+    };
+  } catch (err) {
+    console.log("Erro...", err)
+    return {
+      statusCode: err.statusCode ? err.statusCode : 500,
+      body: JSON.stringify({
+        error: err.name ? err.name : "Ocorreu um erro",
+        message: err.message ? err.message : "Erro desconhecido"
+      }),
+    };
   };
-
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  // return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
-};
+}
 
 module.exports.buscaPorId = async (event) => {
   const { pacienteId } = event.pathParameters
@@ -26,10 +37,10 @@ module.exports.buscaPorId = async (event) => {
       statusCode: 200,
       body: JSON.stringify(pacienteEncontrado),
     };
-  }else {
+  } else {
     return {
       statusCode: 404,
-      body: JSON.stringify({error: "Não encontrado"}),
+      body: JSON.stringify({ error: "Não encontrado" }),
     };
   }
 

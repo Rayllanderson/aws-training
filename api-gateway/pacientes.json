@@ -1,0 +1,54 @@
+{
+    "PACIENTES": [{
+            "PutRequest": {
+                "Item": {
+                    "paciente_id": {
+                        "S": "AEFB-10A2C-A2FDA"
+                    },
+                    "nome": {
+                        "S": "Kaguya Shinomiya"
+                    },
+                    "dataNascimento": {
+                        "S": "2004-01-01"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "paciente_id": {
+                        "S": "AEDA-11A5C-A2FDA"
+                    },
+                    "nome": {
+                        "S": "Chika Fujiwara"
+                    },
+                    "dataNascimento": {
+                        "S": "2003-03-03"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "paciente_id": {
+                        "S": "BA1A-7125A-B2FDC"
+                    },
+                    "nome": {
+                        "S": "Hayasaka Ai"
+                    },
+                    "dataNascimento": {
+                        "S": "2003-04-02"
+                    },
+                    "ocupacao": {
+                        "L": [
+                            { "S": "Estudante" },
+                            { "S": "kaguya's maid" }
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+}
